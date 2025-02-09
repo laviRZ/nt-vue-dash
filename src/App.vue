@@ -30,9 +30,6 @@ onMounted(() => {
       alert("Connected to NT server on localhost");
       counterTopic = nt.createTopic<number>("counter", NetworkTablesTypeInfos.kInteger, count.value);
       counterTopic.publish({ cached: true, persistent: true, retained: false });
-      counterTopic.subscribe((value: number) => {
-        count.value = value;
-      }, {});
     } else {
       alert("Disconnected from NT server on localhost");
     }
