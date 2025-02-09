@@ -11,12 +11,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { NetworkTables } from 'ntcore-ts-client';
+import { NetworkTables, NetworkTablesTypeInfos } from 'ntcore-ts-client';
 
 const count = ref(0);
+let counterTopic: any;
 
 const increment = () => {
   count.value++;
+  if (counterTopic) {
+    counterTopic.setValue(count.value);
+  }
 }
 
 onMounted(() => {
@@ -24,6 +28,11 @@ onMounted(() => {
   nt.addRobotConnectionListener((connected: boolean) => {
     if (connected) {
       alert("Connected to NT server on localhost");
+      counterTopic = nt.createTopic<number>("counter", NetworkTablesTypeInfos.kInteger, count.value);
+      counterTopic.publish({ cached: true, persistent: true, retained: false });
+      counterTopic.subscribe((value: number) => {
+        count.value = value;
+      }, {});
     } else {
       alert("Disconnected from NT server on localhost");
     }
