@@ -10,11 +10,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { NetworkTables } from 'ntcore-ts-client';
 
 const count = ref(0);
 
 const increment = () => {
   count.value++;
 }
+
+onMounted(() => {
+  const nt = NetworkTables.getInstanceByURI("localhost", 5810);
+  nt.addRobotConnectionListener((connected: boolean) => {
+    if (connected) {
+      alert("Connected to NT server on localhost");
+    } else {
+      alert("Disconnected from NT server on localhost");
+    }
+  }, true);
+});
 </script>
