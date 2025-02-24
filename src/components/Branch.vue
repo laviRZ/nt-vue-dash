@@ -3,16 +3,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
 import type { BranchState } from '../App.vue';
 
-const props = defineProps<{
+defineProps<{
   points: string;
   status: BranchState;
 }>();
-
-onMounted(() => {
-});
 </script>
 
 <style scoped>

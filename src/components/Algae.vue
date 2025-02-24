@@ -3,15 +3,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-
-const props = defineProps<{
+defineProps<{
   points: string;
   present: boolean;
 }>();
-
-onMounted(() => {
-});
 </script>
 
 <style scoped>

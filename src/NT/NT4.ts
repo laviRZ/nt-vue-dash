@@ -1,7 +1,7 @@
 // TypeScript version of the original JavaScript code, including type annotations and features for enhanced clarity and robustness.
 
-// Import statement for the serializing and deserializing functions
-import { serialize, deserialize } from "./msgpack";
+// @ts-ignore
+import { serialize, deserialize } from "./msgpack.js";
 
 // Lookup for type string indices
 const typestrIdxLookup = {
@@ -22,7 +22,7 @@ const typestrIdxLookup = {
   "string[]": 20,
 } as const;
 // Type for the topic type, which is a string that can be one of the keys of the typestrIdxLookup object
-type TopicType = keyof typeof typestrIdxLookup
+export type TopicType = keyof typeof typestrIdxLookup
 
 interface SubscriptionOptionsObj {
   periodic: number;
@@ -341,12 +341,12 @@ export class NT4_Client {
   // Server/Client Time Sync Handling
 
   /** Returns the current client time in microseconds. */
-  private getClientTime_us(): number {
+  public getClientTime_us(): number {
     return new Date().getTime() * 1000;
   }
 
   /** Returns the current server time in microseconds (or null if unknown). */
-  private getServerTime_us(clientTime?: number): number | null {
+  public getServerTime_us(clientTime?: number): number | null {
     if (this.serverTimeOffset_us === null) {
       return null;
     } else {
@@ -355,7 +355,7 @@ export class NT4_Client {
   }
 
   /** Returns the current network latency in microseconds. */
-  private getNetworkLatency_us(): number {
+  public getNetworkLatency_us(): number {
     return this.networkLatency_us;
   }
 
@@ -543,7 +543,7 @@ export class NT4_Client {
       deserialize(event.data, { multiple: true }).forEach((unpackedData: any) => {
         const topicID = unpackedData[0];
         const timestamp_us = unpackedData[1];
-        const typeIdx = unpackedData[2];
+        // const typeIdx = unpackedData[2];
         const value = unpackedData[3];
 
         if (topicID >= 0) {
